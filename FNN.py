@@ -11,7 +11,7 @@ from dataloader import data_loader
 data_train, label_train, data_val, label_val = data_loader()
 
 #network size
-input_dim = 11
+input_dim = 9
 hidden_dim = 128
 
 net = Sequential([

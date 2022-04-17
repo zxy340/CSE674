@@ -6,11 +6,10 @@ from Analysis_method import shuffle_list_label_final, zero_list_label_final, shu
     zero_list_data_final, zero_sublist_data_final, shuffle_list_data_layer, zero_list_data_layer, \
     zero_sublist_data_layer
 
-Feature_list = ['gender', 'race', 'intvrage', 'weight', 'howtallft', 'howtallin',
-                'wrdimmrc', 'wrddlyrc', 'clkdraw', 'clkimgcl', 'height']
+Feature_list = ['gender', 'race', 'intvrage', 'weight', 'wrdimmrc', 'wrddlyrc', 'clkdraw', 'clkimgcl', 'height']
 Feature_sublist = ['gender1', 'gender2', 'race1', 'race2', 'race3',
                    'intvrage1', 'intvrage2', 'intvrage3', 'intvrage4', 'intvrage5', 'intvrage6',
-                   'weight', 'howtallft', 'howtallin',
+                   'weight',
                    'wrdimmrc1', 'wrdimmrc2', 'wrdimmrc3', 'wrdimmrc4', 'wrdimmrc5', 'wrdimmrc6',
                    'wrdimmrc7', 'wrdimmrc8', 'wrdimmrc9', 'wrdimmrc10',
                    'wrddlyrc1', 'wrddlyrc2', 'wrddlyrc3', 'wrddlyrc4', 'wrddlyrc5', 'wrddlyrc6',
@@ -19,20 +18,20 @@ Feature_sublist = ['gender1', 'gender2', 'race1', 'race2', 'race3',
                    'clkimgcl1', 'clkimgcl2', 'clkimgcl3', 'clkimgcl4', 'height']
 sublist_map = [[0, 1], [0, 2], [1, 1], [1, 2], [1, 3],
                [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6],
-               [3, -1], [4, -1], [5, -1],
-               [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6],
-               [6, 7], [6, 8], [6, 9], [6, 10],
-               [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6],
-               [7, 7], [7, 8], [7, 9], [7, 10],
-               [8, 1], [8, 2], [8, 3], [8, 4], [8, 5],
-               [9, 1], [9, 2], [9, 3], [9, 4], [10, -1]]
+               [3, -1],
+               [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6],
+               [4, 7], [4, 8], [4, 9], [4, 10],
+               [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6],
+               [5, 7], [5, 8], [5, 9], [5, 10],
+               [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
+               [7, 1], [7, 2], [7, 3], [7, 4], [8, -1]]
 
 # .................custom parameters.................................
 data_processing_mode = 'zero'            # two modes: shuffle, zero
 feature_type_mode = 'list'               # two modes: list, sublist
 importance_calculation_mode = 'data'     # two modes: label, data
 is_layer_mode = 'final'                  # two modes: final, layer
-layer_index = 2  # the index of the layer to calculate the importance
+layer_index = 1  # the index of the layer to calculate the importance
 # ....................................................................
 
 # some fixed parameters
@@ -41,10 +40,6 @@ analysis_mode = data_processing_mode + '_' + feature_type_mode + '_' + importanc
 
 # load data from csv
 data_train, label_train, data_val, label_val = data_loader()
-
-# network size
-input_dim = 11
-hidden_dim = 128
 
 # load MLP model
 model = keras.models.load_model('FNN.h5')

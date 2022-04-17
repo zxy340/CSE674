@@ -7,27 +7,26 @@ from keras.models import Sequential, Model
 from keras.layers import Dense
 from dataloader import data_loader, data_process
 
-Feature_list = ['gender', 'race', 'intvrage', 'weight', 'howtallft', 'howtallin',
-                'wrdimmrc', 'wrddlyrc', 'clkdraw', 'clkimgcl', 'height']
-Feature_sublist = ['gender', 'race', 'intvrage', 'weight', 'howtallft', 'howtallin',
+Feature_list = ['gender', 'race', 'intvrage', 'weight', 'wrdimmrc', 'wrddlyrc', 'clkdraw', 'clkimgcl', 'height']
+Feature_sublist = ['gender', 'race', 'intvrage', 'weight',
                    'wrdimmrc1', 'wrdimmrc2', 'wrdimmrc3', 'wrdimmrc4', 'wrdimmrc5', 'wrdimmrc6',
                    'wrdimmrc7', 'wrdimmrc8', 'wrdimmrc9', 'wrdimmrc10',
                    'wrddlyrc1', 'wrddlyrc2', 'wrddlyrc3', 'wrddlyrc4', 'wrddlyrc5', 'wrddlyrc6',
                    'wrddlyrc7', 'wrddlyrc8', 'wrddlyrc9', 'wrddlyrc10',
                    'clkdraw1', 'clkdraw2', 'clkdraw3', 'clkdraw4', 'clkdraw5',
                    'clkimgcl', 'height']
-sublist_map = [[0, -1], [1, -1], [2, -1], [3, -1], [4, -1], [5, -1],
-               [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6],
-               [6, 7], [6, 8], [6, 9], [6, 10],
-               [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6],
-               [7, 7], [7, 8], [7, 9], [7, 10],
-               [8, 1], [8, 2], [8, 3], [8, 4], [8, 5],
-               [9, -1], [10, -1]]
+sublist_map = [[0, -1], [1, -1], [2, -1], [3, -1],
+               [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6],
+               [4, 7], [4, 8], [4, 9], [4, 10],
+               [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6],
+               [5, 7], [5, 8], [5, 9], [5, 10],
+               [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
+               [7, -1], [8, -1]]
 
 # .................custom parameters.................................
 feature_type_mode = 'list'               # two modes: list, sublist
-start = 10                               # the minimum number of combination features
-end = 11                                 # the maximum number of combination features
+start = 8                                # the minimum number of combination features
+end = 9                                  # the maximum number of combination features
 # ...................................................................
 
 # some fixed parameters
@@ -37,7 +36,7 @@ feature_type = {'list': Feature_list, 'sublist': Feature_sublist}
 data_train, label_train, data_val, label_val = data_loader()
 
 #network size
-input_dim = 11
+input_dim = 9
 hidden_dim = 128
 
 # ............Computing MLP accuracy of each kind of feature combination..................
@@ -48,7 +47,7 @@ for k in range(start, end + 1):
     for index_list in range(len(features)):
         data_train_processed, label_train_processed, data_val_processed, label_val_processed = \
             data_process(data_train, label_train, data_val, label_val, features[index_list], feature_type_mode, sublist_map)
-        if isinstance(data_train_processed, int):
+        if len(data_train_processed) == 0:
             continue
 
         net = Sequential([
@@ -78,7 +77,6 @@ for k in range(start, end + 1):
         else:
             for i in range(len(features[index_list])):
                 feature_name = feature_name + str(features[index_list][i]) + ' '
-        print(feature_name)
 
         # model accuracy calculation
         y_pred = np.argmax(net.predict(data_val), axis=1)
@@ -86,11 +84,9 @@ for k in range(start, end + 1):
 # ........................................................................
 
 # ...........plot the accuracy of all combination.........................
-feature_name = []
-accuracy = []
-data_number = []
-index = np.arange(len(feature_type[feature_type_mode]))
-for i in range(len(feature_type[feature_type_mode])):
+feature_name, accuracy, data_number = [], [], []
+index = np.arange(len(results))
+for i in range(len(results)):
     feature_name.append(results[i]['feature'])
     accuracy.append(results[i]['acc'])
     data_number.append(results[i]['number'])

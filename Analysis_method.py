@@ -51,7 +51,7 @@ def shuffle_list_label_final(features, data_val, label_val, model):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             label_val (array): size(662,), label of data_val
             model (dict): the trained MLP model
 
@@ -77,7 +77,7 @@ def zero_list_label_final(features, data_val, label_val, model):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             label_val (array): size(662,), label of data_val
             model (dict): the trained MLP model
 
@@ -103,7 +103,7 @@ def shuffle_list_data_final(features, data_val, model):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
 
         Returns:
@@ -129,7 +129,7 @@ def zero_list_data_final(features, data_val, model):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
 
         Returns:
@@ -156,7 +156,7 @@ def zero_sublist_data_final(features, sublist_map, data_val, model):
         Args:
             features (list): the list of the feature names
             sublist_map (list): indicate the index and the value of the major feature
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
 
         Returns:
@@ -193,7 +193,7 @@ def shuffle_list_data_layer(features, data_val, model, layer_index):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
             layer_index (int): indicate the index of the layer for importance calculation
 
@@ -221,7 +221,7 @@ def zero_list_data_layer(features, data_val, model, layer_index):
     """
         Args:
             features (list): the list of the feature names
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
             layer_index (int): indicate the index of the layer for importance calculation
 
@@ -250,7 +250,7 @@ def zero_sublist_data_layer(features, sublist_map, data_val, model, layer_index)
         Args:
             features (list): the list of the feature names
             sublist_map (list): indicate the index and the value of the major feature
-            data_val (array): size(662, 11), same as the data for testing
+            data_val (array): size(662, 9), same as the data for testing
             model (dict): the trained MLP model
             layer_index (int): indicate the index of the layer for importance calculation
 

@@ -8,9 +8,9 @@ def data_loader():
         My csv files' path is './csv', please adapt to your own path
 
         Returns:
-            data_train (array): size(1000, 11), data for training
+            data_train (array): size(1000, 9), data for training
             label_train (array): size(1000,), label of the training dataset
-            data_val (array): size(662, 11), data for testing
+            data_val (array): size(662, 9), data for testing
             label_val (array): size(662,), label of the testing dataset
 
             Note: the whole dataset has 1662 samples, we randomly get 1000 samples without repeating for training, and
@@ -25,14 +25,14 @@ def data_loader():
         data_all = np.vstack((data_all, data))
 
     data_all = np.delete(data_all, 0, 0)
-    data_all = np.delete(data_all, np.s_[0:2], axis=1)
+    data_all = np.delete(data_all, np.s_[0, 1, 7, 8], axis=1)
 
     # preprocessing
     label = data_all[:, 0]
     feature = data_all[:, 1:]
     # feature = normalize(feature, axis=0, norm='max')
-    feature[:, [3, 4, 5, 10]] = (feature[:, [3, 4, 5, 10]] - feature[:, [3, 4, 5, 10]].min(axis=0)) / \
-                    (feature[:, [3, 4, 5, 10]].max(axis=0) - feature[:, [3, 4, 5, 10]].min(axis=0))
+    feature[:, [3, 8]] = (feature[:, [3, 8]] - feature[:, [3, 8]].min(axis=0)) / \
+                    (feature[:, [3, 8]].max(axis=0) - feature[:, [3, 8]].min(axis=0))
     # feature_norm = (feature - feature.min(axis=0)) / (feature.max(axis=0) - feature.min(axis=0))
     arr = np.array(range(0, 1662))
     arr = np.random.permutation(arr)
@@ -56,18 +56,18 @@ def data_process(data_train, label_train, data_val, label_val, feature_list, fea
         further process the data to adapt the stepwise
 
         Args:
-            data_train (array): size(1000, 11), data for training
+            data_train (array): size(1000, 9), data for training
             label_train (array): size(662,), label of data_train
-            data_val (array): size(662, 11), same as the data for training
+            data_val (array): size(662, 9), same as the data for training
             label_val (array): size(662,), label of data_val
             feature_list (list): the list of the feature index
             feature_type_mode (str): two modes: list, sublist
             sublist_map (list): indicate the index and the value of the major feature
 
         Returns:
-            data_train (array): size(1000, 11), data for training
+            data_train (array): size(1000, 9), data for training
             label_train (array): size(1000,), label of the training dataset
-            data_val (array): size(662, 11), data for testing
+            data_val (array): size(662, 9), data for testing
             label_val (array): size(662,), label of the testing dataset
 
             Note: the whole dataset has 1662 samples, we randomly get 1000 samples without repeating for training, and
@@ -75,17 +75,17 @@ def data_process(data_train, label_train, data_val, label_val, feature_list, fea
     """
     if feature_type_mode == 'list':  # if the list is major feature list, we just need to get the feature_list data
         data_train_processed = data_train[:, feature_list]
-        label_train_processed = label_train[:]
+        label_train_processed = label_train
         data_val_processed = data_val[:, feature_list]
-        label_val_processed = label_val[:]
+        label_val_processed = label_val
     else:
         if isinstance(feature_list, int):  # if the list is a minor feature list, we need to first know if the feature_list is an integer
             index, value = sublist_map[feature_list]
             if value == -1:  # if the one wanted feature is a major feature, we just need to get the feature_list data
                 data_train_processed = data_train[:, index]
-                label_train_processed = label_train[:]
+                label_train_processed = label_train
                 data_val_processed = data_val[:, index]
-                label_val_processed = label_val[:]
+                label_val_processed = label_val
             else:  # if the one wanted feature is a minor feature, we need to get the feature_list data with the minor feature value
                 data_squ = (data_train[:, index] == 0) | (data_train[:, index] == value)
                 data_train_processed = data_train[data_squ, index]
@@ -99,7 +99,7 @@ def data_process(data_train, label_train, data_val, label_val, feature_list, fea
                 index, value = sublist_map[feature_list[i]]
                 index_later, value_later = sublist_map[feature_list[i + 1]]
                 if index == index_later:
-                    return 0, 0, 0, 0
+                    return np.array([]), np.array([]), np.array([]), np.array([])
             # if the minor features don't conflict in the same major features, we extract the data of the minor feature list
             index, value = [], []
             for i in range(len(feature_list)):
@@ -107,14 +107,14 @@ def data_process(data_train, label_train, data_val, label_val, feature_list, fea
                 index.append(index_i)
                 value.append(value_i)
             data_train_processed = data_train[:, index]
-            label_train_processed = label_train[:]
+            label_train_processed = label_train
             data_val_processed = data_val[:, index]
-            label_val_processed = label_val[:]
+            label_val_processed = label_val
             for i in range(len(feature_list)):
                 data_squ = (data_train_processed[:, i] == 0) | (data_train_processed[:, i] == value[i])
                 data_train_processed = data_train_processed[data_squ]
                 label_train_processed = label_train_processed[data_squ]
-                test_squ = (data_val[:, index] == 0) | (data_val[:, index] == value)
+                test_squ = (data_val_processed[:, i] == 0) | (data_val_processed[:, i] == value)
                 data_val_processed = data_val_processed[test_squ]
                 label_val_processed = label_val_processed[test_squ]
     return data_train_processed, label_train_processed, data_val_processed, label_val_processed
