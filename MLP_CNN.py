@@ -5,6 +5,7 @@ import keras
 from keras.models import Sequential
 from keras.layers.core import Dense
 from dataloader import data_loader, data_loader_CNNimage, data_loader_meanimage
+from keras.optimizers import adam_v2
 
 # load MLP model
 model = keras.models.load_model('CNN.h5')
@@ -19,10 +20,14 @@ label_train = np.eye(2)[label_train.reshape(-1)]
 label_val = np.eye(2)[label_val.reshape(-1)]
 
 net = Sequential([
-  Dense(128, activation='relu', use_bias=False, input_dim=input_dim),  # hidden layer
-  Dense(2, activation='softmax', use_bias=False, name='Dense_1'),
-  Dense(2, activation='softmax', use_bias=False, name='Dense_2'),  # output layer
+  Dense(32, input_dim=9, activation='relu'),
+  Dense(64, activation='relu'),
+  Dense(128, activation='relu'),
+  Dense(64, activation='relu'),
+  Dense(16, activation='relu'),
+  Dense(2, activation='softmax')
 ])
+adam = adam_v2.Adam(learning_rate=0.0001)
 
 # loss is cross entropy
 net.compile(
@@ -34,5 +39,6 @@ net.fit(
   label_train,
   epochs=20,
   batch_size=32,
-  validation_data=(data_val, label_val)
+  validation_data=(data_val, label_val),
+  class_weight={0: 1, 1: 5}
 )

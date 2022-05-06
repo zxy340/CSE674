@@ -20,9 +20,12 @@ for i in range(len(results)):
     feature_name.append(results[i]['feature'])
     accuracy.append(results[i]['AUC'])
     data_number.append(results[i]['number'])
-plt.figure(figsize=(45, 5))
+plt.figure(figsize=(20, 5))
 plt.bar(x=index, height=accuracy)
 plt.xticks(index, feature_name)
 for x, y, z in zip(index, accuracy, data_number):
     plt.text(x, y, '%d' % z, ha='center')
+plt.title('Stepwise results')
+plt.xlabel('Features')
+plt.ylabel('AUC score')
 plt.show()

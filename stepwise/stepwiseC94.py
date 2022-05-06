@@ -36,9 +36,12 @@ for k in range(start, end + 1):
         ))
 
         net = Sequential([
-          Dense(hidden_dim, activation='relu', use_bias=False, input_dim=input_dim),  # hidden layer
-          Dense(2, activation='softmax', use_bias=False, name='Dense_1'),
-          Dense(2, activation='softmax', use_bias=False, name='Dense_2'),  # output layer
+            Dense(32, input_dim=input_dim, activation='relu'),
+            Dense(64, activation='relu'),
+            Dense(128, activation='relu'),
+            Dense(64, activation='relu'),
+            Dense(16, activation='relu'),
+            Dense(2, activation='softmax')
         ])
 
         # loss is cross entropy
